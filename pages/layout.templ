@@ -1,0 +1,26 @@
+package pages
+
+templ Layout() {
+	<!DOCTYPE html>
+	<html lang="en">
+		<head>
+			<meta charset="UTF-8"/>
+			<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+			<link rel="icon" type="image/svg+xml" href="/dist/hamburger.svg"/>
+			<link href="/dist/output.css" rel="stylesheet"/>
+			<title>Was Essen</title>
+			<script src="https://unpkg.com/htmx.org@1.5.0"></script>
+		</head>
+		<body>
+			<div class="flex flex-col items-center">
+				<a href="/">
+					<div class="flex items-center">
+						<img src="/dist/hamburger.svg" alt="" class="h-8 mr-2"/>
+						<h1>Was Essen</h1>
+					</div>
+				</a>
+				{ children... }
+			</div>
+		</body>
+	</html>
+}

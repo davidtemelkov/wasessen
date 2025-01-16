@@ -1,0 +1,17 @@
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+*.env
+*.json
+
+*.test
+
+*.out
+
+go.work
+
+.DS_Store
+
+fly.toml
