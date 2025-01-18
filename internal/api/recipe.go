@@ -6,6 +6,7 @@ import (
 	"net/http"
 
 	"github.com/davidtemelkov/wasessen/internal/data"
+	"github.com/go-chi/chi/v5"
 
 	"github.com/davidtemelkov/wasessen/internal/utils"
 )
@@ -32,6 +33,25 @@ func handleAddRecipe() http.HandlerFunc {
 
 		// TODO: Instead of this rerender recipes
 		fmt.Fprintf(w, "recipe added successfully")
+	}
+}
+
+func handleRemoveRecipe() http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		id := chi.URLParam(r, "id")
+		if id == "" {
+			http.Error(w, "missing id", http.StatusBadRequest)
+			return
+		}
+
+		err := data.RemoveRecipe(r.Context(), id)
+		if err != nil {
+			http.Error(w, "internal server error", http.StatusInternalServerError)
+			return
+		}
+
+		// TODO: Instead of this rerender recipe queue
+		fmt.Fprintf(w, "recipe removed successfully")
 	}
 }
 

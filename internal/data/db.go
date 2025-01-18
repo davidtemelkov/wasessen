@@ -15,7 +15,6 @@ const (
 	PK                    = "PK"
 	SK                    = "SK"
 	RECIPE                = "RECIPE"
-	RECIPE_PREFIX         = "RECIPE#"
 	NAME                  = "Name"
 	INGREDIENTS           = "Ingredients"
 	PREPARATION           = "Preparation"

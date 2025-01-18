@@ -7,9 +7,11 @@ import (
 	"github.com/aws/aws-sdk-go-v2/feature/dynamodb/attributevalue"
 	"github.com/aws/aws-sdk-go-v2/service/dynamodb"
 	"github.com/aws/aws-sdk-go-v2/service/dynamodb/types"
+	"github.com/google/uuid"
 )
 
 type Recipe struct {
+	ID          string `json:"id"`
 	Name        string `json:"name"`
 	Ingredients string `json:"ingredients"`
 	Preparation string `json:"preparation"`
@@ -18,12 +20,17 @@ type Recipe struct {
 }
 
 func InsertRecipe(ctx context.Context, recipe Recipe) error {
+	id := uuid.New().String()
+
 	item := map[string]types.AttributeValue{
 		PK: &types.AttributeValueMemberS{
 			Value: RECIPE,
 		},
 		SK: &types.AttributeValueMemberS{
-			Value: RECIPE_PREFIX + recipe.Name,
+			Value: id,
+		},
+		ID: &types.AttributeValueMemberS{
+			Value: id,
 		},
 		NAME: &types.AttributeValueMemberS{
 			Value: recipe.Name,
@@ -56,28 +63,22 @@ func InsertRecipe(ctx context.Context, recipe Recipe) error {
 }
 
 func GetRecipes(ctx context.Context) ([]Recipe, error) {
-	keyConditionExpression := "#pk = :pk AND begins_with(#sk, :sk)"
 	expressionAttributeNames := map[string]string{
 		"#pk": PK,
-		"#sk": SK,
 	}
 	expressionAttributeValues := map[string]types.AttributeValue{
 		":pk": &types.AttributeValueMemberS{
 			Value: RECIPE,
 		},
-		":sk": &types.AttributeValueMemberS{
-			Value: RECIPE_PREFIX,
-		},
 	}
 
-	queryInput := &dynamodb.QueryInput{
+	scanInput := &dynamodb.ScanInput{
 		TableName:                 aws.String(TABLE_NAME),
-		KeyConditionExpression:    aws.String(keyConditionExpression),
 		ExpressionAttributeNames:  expressionAttributeNames,
 		ExpressionAttributeValues: expressionAttributeValues,
 	}
 
-	result, err := Db.Query(ctx, queryInput)
+	result, err := Db.Scan(ctx, scanInput)
 	if err != nil {
 		return nil, err
 	}
@@ -95,4 +96,23 @@ func GetRecipes(ctx context.Context) ([]Recipe, error) {
 	return recipes, nil
 }
 
-// TODO: Add update and remove recipe
+func RemoveRecipe(ctx context.Context, id string) error {
+	key := map[string]types.AttributeValue{
+		PK: &types.AttributeValueMemberS{Value: RECIPE},
+		SK: &types.AttributeValueMemberS{Value: id},
+	}
+
+	deleteItemInput := &dynamodb.DeleteItemInput{
+		TableName: aws.String(TABLE_NAME),
+		Key:       key,
+	}
+
+	_, err := Db.DeleteItem(ctx, deleteItemInput)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+// TODO: Add update recipe

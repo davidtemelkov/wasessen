@@ -20,7 +20,7 @@ type RecipeQueueItem struct {
 
 func GetRecipeQueueItems(ctx context.Context) ([]RecipeQueueItem, error) {
 	expressionAttributeNames := map[string]string{
-		"#pk": "PK",
+		"#pk": PK,
 	}
 	expressionAttributeValues := map[string]types.AttributeValue{
 		":pk": &types.AttributeValueMemberS{
