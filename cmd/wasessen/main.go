@@ -5,8 +5,8 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/davidtemelkov/wasessen/api"
-	"github.com/davidtemelkov/wasessen/data"
+	"github.com/davidtemelkov/wasessen/internal/api"
+	"github.com/davidtemelkov/wasessen/internal/data"
 )
 
 func main() {

@@ -14,6 +14,19 @@ const (
 	TIME_FORMAT_JUST_DATE = "2006-01-02T00:00:00"
 	PK                    = "PK"
 	SK                    = "SK"
+	RECIPE                = "RECIPE"
+	RECIPE_PREFIX         = "RECIPE#"
+	NAME                  = "Name"
+	INGREDIENTS           = "Ingredients"
+	PREPARATION           = "Preparation"
+	DIFFICULTY            = "Difficulty"
+	IMAGE_URL             = "ImageUrl"
+	RECIPE_QUEUE          = "RECIPEQUEUE"
+	RECIPE_QUEUE_COUNT    = "RECIPEQUEUECOUNT"
+	RECIPE_NAME           = "RecipeName"
+	POSITION              = "Position"
+	COOK                  = "Cook"
+	ID                    = "Id"
 )
 
 var Db *dynamodb.Client

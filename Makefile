@@ -6,7 +6,7 @@ build:
 	templ generate
 
 css:
-	npx tailwindcss -i ./assets/input.css -o ./assets/dist/output.css --minify
+	npx tailwindcss -i ./internal/assets/input.css -o ./internal/assets/dist/output.css --minify
 
 run:
 	go run ./cmd/wasessen

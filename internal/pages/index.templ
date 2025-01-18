@@ -1,0 +1,23 @@
+package pages
+
+import (
+	"github.com/davidtemelkov/wasessen/internal/data"
+	"strconv"
+)
+
+templ Index(recipes []data.Recipe, recipeQueue []data.RecipeQueueItem) {
+	@Layout() {
+		<div class="mt-5">
+			for _, recipe := range recipes {
+				<p>{ recipe.Name }</p>
+			}
+		</div>
+		<div class="mt-5">
+			for _, recipe := range recipeQueue {
+				<p>{ recipe.RecipeName }</p>
+				<p>{ recipe.Cook }</p>
+				<p>{ strconv.Itoa(recipe.Position) }</p>
+			}
+		</div>
+	}
+}
