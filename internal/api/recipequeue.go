@@ -10,8 +10,10 @@ import (
 
 func handleAddRecipeToQueue() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
+		// TODO: get these form body, add validation
 		recipeName := r.FormValue("recipe_name")
 		cook := r.FormValue("cook")
+		//
 
 		err := data.InsertRecipeQueueItem(r.Context(), recipeName, cook)
 		if err != nil {

@@ -50,7 +50,7 @@ func handleRemoveRecipe() http.HandlerFunc {
 			return
 		}
 
-		// TODO: Instead of this rerender recipe queue
+		// TODO: Instead of this rerender recipes
 		fmt.Fprintf(w, "recipe removed successfully")
 	}
 }
