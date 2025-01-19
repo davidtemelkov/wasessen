@@ -43,7 +43,7 @@ func Index(recipes []data.Recipe, recipeQueue []data.RecipeQueueItem) templ.Comp
 				}()
 			}
 			ctx = templ.InitializeContext(ctx)
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"mt-5\">")
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<button class=\"mt-5 bg-[#26bd6a]\" hx-get=\"/recipe/modal\" hx-target=\"body\" hx-swap=\"beforeend\">Add a recipe</button><div class=\"mt-5\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -55,7 +55,7 @@ func Index(recipes []data.Recipe, recipeQueue []data.RecipeQueueItem) templ.Comp
 				var templ_7745c5c3_Var3 string
 				templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinStringErrs(recipe.Name)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/pages/index.templ`, Line: 12, Col: 20}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/pages/index.templ`, Line: 15, Col: 20}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var3))
 				if templ_7745c5c3_Err != nil {
@@ -78,7 +78,7 @@ func Index(recipes []data.Recipe, recipeQueue []data.RecipeQueueItem) templ.Comp
 				var templ_7745c5c3_Var4 string
 				templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinStringErrs(recipe.RecipeName)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/pages/index.templ`, Line: 17, Col: 26}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/pages/index.templ`, Line: 20, Col: 26}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var4))
 				if templ_7745c5c3_Err != nil {
@@ -91,7 +91,7 @@ func Index(recipes []data.Recipe, recipeQueue []data.RecipeQueueItem) templ.Comp
 				var templ_7745c5c3_Var5 string
 				templ_7745c5c3_Var5, templ_7745c5c3_Err = templ.JoinStringErrs(recipe.Cook)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/pages/index.templ`, Line: 18, Col: 20}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/pages/index.templ`, Line: 21, Col: 20}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var5))
 				if templ_7745c5c3_Err != nil {
@@ -104,7 +104,7 @@ func Index(recipes []data.Recipe, recipeQueue []data.RecipeQueueItem) templ.Comp
 				var templ_7745c5c3_Var6 string
 				templ_7745c5c3_Var6, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(recipe.Position))
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/pages/index.templ`, Line: 19, Col: 38}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/pages/index.templ`, Line: 22, Col: 38}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var6))
 				if templ_7745c5c3_Err != nil {

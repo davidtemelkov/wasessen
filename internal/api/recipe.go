@@ -5,7 +5,9 @@ import (
 	"fmt"
 	"net/http"
 
+	"github.com/davidtemelkov/wasessen/internal/components"
 	"github.com/davidtemelkov/wasessen/internal/data"
+
 	"github.com/go-chi/chi/v5"
 
 	"github.com/davidtemelkov/wasessen/internal/utils"
@@ -33,6 +35,12 @@ func handleAddRecipe() http.HandlerFunc {
 
 		// TODO: Instead of this rerender recipes
 		fmt.Fprintf(w, "recipe added successfully")
+	}
+}
+
+func handleOpenAddRecipeModal() http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		components.AddRecipe().Render(r.Context(), w)
 	}
 }
 

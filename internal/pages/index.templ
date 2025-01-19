@@ -7,6 +7,9 @@ import (
 
 templ Index(recipes []data.Recipe, recipeQueue []data.RecipeQueueItem) {
 	@Layout() {
+		<button class="mt-5 bg-[#26bd6a]" hx-get="/recipe/modal" hx-target="body" hx-swap="beforeend">
+			Add a recipe
+		</button>
 		<div class="mt-5">
 			for _, recipe := range recipes {
 				<p>{ recipe.Name }</p>

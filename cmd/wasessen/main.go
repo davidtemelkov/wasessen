@@ -7,12 +7,16 @@ import (
 
 	"github.com/davidtemelkov/wasessen/internal/api"
 	"github.com/davidtemelkov/wasessen/internal/data"
+	"github.com/joho/godotenv"
 )
 
 func main() {
-	var ctx = context.Background()
+	err := godotenv.Load()
+	if err != nil {
+		os.Exit(1)
+	}
 
-	var err error
+	var ctx = context.Background()
 	data.Db, err = data.NewDynamoDbClient(ctx)
 	if err != nil {
 		os.Exit(1)

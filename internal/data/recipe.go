@@ -72,17 +72,17 @@ func GetRecipes(ctx context.Context) ([]Recipe, error) {
 		},
 	}
 
-	scanInput := &dynamodb.ScanInput{
+	queryInput := &dynamodb.QueryInput{
 		TableName:                 aws.String(TABLE_NAME),
+		KeyConditionExpression:    aws.String("#pk = :pk"),
 		ExpressionAttributeNames:  expressionAttributeNames,
 		ExpressionAttributeValues: expressionAttributeValues,
 	}
 
-	result, err := Db.Scan(ctx, scanInput)
+	result, err := Db.Query(ctx, queryInput)
 	if err != nil {
 		return nil, err
 	}
-
 	recipes := make([]Recipe, 0)
 	for _, item := range result.Items {
 		recipe := Recipe{}
