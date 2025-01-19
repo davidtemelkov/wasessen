@@ -7,6 +7,7 @@ import (
 
 	"github.com/davidtemelkov/wasessen/internal/components"
 	"github.com/davidtemelkov/wasessen/internal/data"
+	"github.com/davidtemelkov/wasessen/internal/pages"
 
 	"github.com/go-chi/chi/v5"
 
@@ -60,6 +61,56 @@ func handleRemoveRecipe() http.HandlerFunc {
 
 		// TODO: Instead of this rerender recipes
 		fmt.Fprintf(w, "recipe removed successfully")
+	}
+}
+
+func handleUpdateRecipe() http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		err := r.ParseMultipartForm(10 << 20)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusBadRequest)
+			return
+		}
+
+		// TODO: better error handling, return bad request if malformed input
+		newRecipe, err := parseRecipeFromRequest(r)
+		if err != nil {
+			http.Error(w, "internal server error", http.StatusInternalServerError)
+		}
+
+		id := r.FormValue("id")
+		oldRecipe, err := data.GetRecipeByID(r.Context(), id)
+		if err != nil {
+			// TODO: Errors is
+			http.Error(w, "internal server error", http.StatusInternalServerError)
+		}
+
+		err = data.UpdateRecipe(r.Context(), oldRecipe, newRecipe)
+		if err != nil {
+			http.Error(w, "internal server error", http.StatusInternalServerError)
+			return
+		}
+
+		// TODO: Instead of this rerender recipe details
+		fmt.Fprintf(w, "recipe updated successfully")
+	}
+}
+
+func handleServeRecipe() http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		id := chi.URLParam(r, "id")
+		if id == "" {
+			http.Error(w, "missing id", http.StatusBadRequest)
+			return
+		}
+
+		recipe, err := data.GetRecipeByID(r.Context(), id)
+		if err != nil {
+			http.Error(w, "internal server error", http.StatusInternalServerError)
+			return
+		}
+
+		pages.Recipe(recipe).Render(r.Context(), w)
 	}
 }
 

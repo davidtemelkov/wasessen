@@ -10,9 +10,11 @@ func SetUpRoutes() *chi.Mux {
 	assets.Mount(r)
 
 	r.Get("/", handleServeIndex())
+	r.Get("/recipe/{id}", handleServeRecipe())
 	r.Post("/recipe", handleAddRecipe())
-	r.Get("/recipe/modal", handleOpenAddRecipeModal())
+	r.Patch("/recipe", handleUpdateRecipe())
 	r.Delete("/recipe/{id}", handleRemoveRecipe())
+	r.Get("/recipe/modal", handleOpenAddRecipeModal())
 	r.Post("/recipequeue", handleAddRecipeToQueue())
 	r.Delete("/recipequeue/{id}", handleRemoveRecipeFromQueue())
 

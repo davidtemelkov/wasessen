@@ -5,6 +5,7 @@ import (
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/feature/dynamodb/attributevalue"
+	"github.com/aws/aws-sdk-go-v2/feature/dynamodb/expression"
 	"github.com/aws/aws-sdk-go-v2/service/dynamodb"
 	"github.com/aws/aws-sdk-go-v2/service/dynamodb/types"
 	"github.com/google/uuid"
@@ -115,4 +116,85 @@ func RemoveRecipe(ctx context.Context, id string) error {
 	return nil
 }
 
-// TODO: Add update recipe
+func GetRecipeByID(ctx context.Context, id string) (Recipe, error) {
+	key := map[string]types.AttributeValue{
+		PK: &types.AttributeValueMemberS{Value: RECIPE},
+		SK: &types.AttributeValueMemberS{Value: id},
+	}
+
+	getItemInput := &dynamodb.GetItemInput{
+		TableName: aws.String(TABLE_NAME),
+		Key:       key,
+	}
+
+	result, err := Db.GetItem(ctx, getItemInput)
+	if err != nil {
+		return Recipe{}, err
+	}
+
+	// TODO: Err record not found
+	if result.Item == nil {
+		return Recipe{}, nil
+	}
+
+	var recipe Recipe
+	if err := attributevalue.UnmarshalMap(result.Item, &recipe); err != nil {
+		return Recipe{}, err
+	}
+
+	return recipe, nil
+}
+
+func UpdateRecipe(ctx context.Context, oldRecipe Recipe, newRecipe Recipe) error {
+	update := expression.UpdateBuilder{}
+	hasChanges := false
+
+	if oldRecipe.Name != newRecipe.Name {
+		update = update.Set(expression.Name(NAME), expression.Value(newRecipe.Name))
+		hasChanges = true
+	}
+	if oldRecipe.Ingredients != newRecipe.Ingredients {
+		update = update.Set(expression.Name(INGREDIENTS), expression.Value(newRecipe.Ingredients))
+		hasChanges = true
+	}
+	if oldRecipe.Preparation != newRecipe.Preparation {
+		update = update.Set(expression.Name(PREPARATION), expression.Value(newRecipe.Preparation))
+		hasChanges = true
+	}
+	if oldRecipe.Difficulty != newRecipe.Difficulty {
+		update = update.Set(expression.Name(DIFFICULTY), expression.Value(newRecipe.Difficulty))
+		hasChanges = true
+	}
+	if oldRecipe.ImageURL != newRecipe.ImageURL && newRecipe.ImageURL != "" {
+		update = update.Set(expression.Name(IMAGE_URL), expression.Value(newRecipe.ImageURL))
+		hasChanges = true
+	}
+
+	// TODO: Return error or nil?
+	if !hasChanges {
+		return nil
+	}
+
+	expr, err := expression.NewBuilder().WithUpdate(update).Build()
+	if err != nil {
+		return err
+	}
+
+	updateInput := &dynamodb.UpdateItemInput{
+		TableName: aws.String(TABLE_NAME),
+		Key: map[string]types.AttributeValue{
+			PK: &types.AttributeValueMemberS{Value: RECIPE},
+			SK: &types.AttributeValueMemberS{Value: oldRecipe.ID},
+		},
+		UpdateExpression:          expr.Update(),
+		ExpressionAttributeNames:  expr.Names(),
+		ExpressionAttributeValues: expr.Values(),
+	}
+
+	_, err = Db.UpdateItem(ctx, updateInput)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
