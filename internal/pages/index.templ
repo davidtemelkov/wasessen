@@ -1,7 +1,6 @@
 package pages
 
 import (
-	"fmt"
 	"github.com/davidtemelkov/wasessen/internal/components"
 	"github.com/davidtemelkov/wasessen/internal/data"
 	"strconv"
@@ -20,31 +19,7 @@ templ Index(recipes []data.Recipe, recipeQueue data.RecipeQueue) {
 			</div>
 			<div class="mt-5">
 				<h2>Recipes</h2>
-				for _, recipe := range recipes {
-					<div class="recipe-item flex justify-between items-center mb-3">
-						<p>{ recipe.Name }</p>
-						<div class="flex space-x-2">
-							<button
-								hx-post="/recipequeue"
-								hx-vals={ fmt.Sprintf(`{"recipe_name":"%s", "cook":"David"}`, recipe.Name) }
-								class="bg-blue-500 px-4 py-2"
-								hx-target="#recipe-queue-container"
-								hx-swap="innerHTML"
-							>
-								David
-							</button>
-							<button
-								hx-post="/recipequeue"
-								hx-vals={ fmt.Sprintf(`{"recipe_name":"%s", "cook":"Simona"}`, recipe.Name) }
-								class="bg-green-500 px-4 py-2"
-								hx-target="#recipe-queue-container"
-								hx-swap="innerHTML"
-							>
-								Simona
-							</button>
-						</div>
-					</div>
-				}
+				@components.Recipes(recipes)
 			</div>
 		</div>
 	}

@@ -34,8 +34,14 @@ func handleAddRecipe() http.HandlerFunc {
 			return
 		}
 
-		// TODO: Instead of this rerender recipes
-		fmt.Fprintf(w, "recipe added successfully")
+		recipes, err := data.GetRecipes(r.Context())
+		if err != nil {
+			http.Error(w, "internal server error", http.StatusInternalServerError)
+			return
+		}
+
+		recipesHTML := components.Recipes(recipes).Render(r.Context(), w)
+		fmt.Fprint(w, recipesHTML)
 	}
 }
 
@@ -59,8 +65,14 @@ func handleRemoveRecipe() http.HandlerFunc {
 			return
 		}
 
-		// TODO: Instead of this rerender recipes
-		fmt.Fprintf(w, "recipe removed successfully")
+		recipes, err := data.GetRecipes(r.Context())
+		if err != nil {
+			http.Error(w, "internal server error", http.StatusInternalServerError)
+			return
+		}
+
+		recipesHTML := components.Recipes(recipes).Render(r.Context(), w)
+		fmt.Fprint(w, recipesHTML)
 	}
 }
 

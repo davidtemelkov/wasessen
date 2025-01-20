@@ -35,6 +35,9 @@ templ AddRecipe() {
 				class="bg-[#ffb675] p-4"
 				hx-post="/recipe"
 				hx-encoding="multipart/form-data"
+				hx-target="#recipes-container"
+				hx-swap="innerHTML"
+				_="on htmx:afterRequest remove #modal-wrapper"
 			>
 				<label class="block mb-4">
 					Name:
