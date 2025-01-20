@@ -14,7 +14,10 @@ templ Index(recipes []data.Recipe, recipeQueue data.RecipeQueue) {
 		<div class="flex">
 			<div class="mt-5">
 				<h2>Recipe Queue</h2>
-				<h2>Recipe Queue Count { strconv.Itoa(recipeQueue.Count) }</h2>
+				<div class="flex">
+					<h2>Recipe Queue Count</h2>
+					<span id="recipe-queue-count">{ strconv.Itoa(recipeQueue.Count) }</span>
+				</div>
 				@components.RecipeQueue(recipeQueue.Queue)
 			</div>
 			<div class="mt-5">

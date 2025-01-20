@@ -19,6 +19,7 @@ templ Recipes(recipes []data.Recipe) {
 						class="bg-blue-500 px-4 py-2"
 						hx-target="#recipe-queue-container"
 						hx-swap="innerHTML"
+						_="on htmx:afterRequest set #recipe-queue-count.innerText to (parseInt(#recipe-queue-count.innerText) + 1)"
 					>
 						David
 					</button>
@@ -28,6 +29,7 @@ templ Recipes(recipes []data.Recipe) {
 						class="bg-green-500 px-4 py-2"
 						hx-target="#recipe-queue-container"
 						hx-swap="innerHTML"
+						_="on htmx:afterRequest set #recipe-queue-count.innerText to (parseInt(#recipe-queue-count.innerText) + 1)"
 					>
 						Simona
 					</button>

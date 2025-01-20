@@ -114,7 +114,7 @@ func RecipeQueue(queue []data.RecipeQueueItem) templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\" class=\"bg-red-500 px-4 py-2\" hx-target=\"#recipe-queue-container\" hx-swap=\"innerHTML\">X</button></div></div>")
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\" class=\"bg-red-500 px-4 py-2\" hx-target=\"#recipe-queue-container\" hx-swap=\"innerHTML\" _=\"on htmx:afterRequest set #recipe-queue-count.innerText to (#recipe-queue-count.innerText - 1)\">X</button></div></div>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
