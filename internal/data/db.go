@@ -21,7 +21,6 @@ const (
 	DIFFICULTY            = "Difficulty"
 	IMAGE_URL             = "ImageUrl"
 	RECIPE_QUEUE          = "RECIPEQUEUE"
-	RECIPE_QUEUE_COUNT    = "RECIPEQUEUECOUNT"
 	RECIPE_NAME           = "RecipeName"
 	POSITION              = "Position"
 	COOK                  = "Cook"

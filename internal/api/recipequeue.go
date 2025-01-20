@@ -4,25 +4,25 @@ import (
 	"fmt"
 	"net/http"
 
+	"github.com/davidtemelkov/wasessen/internal/components"
 	"github.com/davidtemelkov/wasessen/internal/data"
 	"github.com/go-chi/chi/v5"
 )
 
 func handleAddRecipeToQueue() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		// TODO: get these form body, add validation
 		recipeName := r.FormValue("recipe_name")
 		cook := r.FormValue("cook")
-		//
 
-		err := data.InsertRecipeQueueItem(r.Context(), recipeName, cook)
+		updatedRecipeQueue, err := data.AddRecipeToQueue(r.Context(), recipeName, cook)
 		if err != nil {
+			fmt.Println(err)
 			http.Error(w, "internal server error", http.StatusInternalServerError)
 			return
 		}
 
-		// TODO: Instead of this rerender recipe queue
-		fmt.Fprintf(w, "recipe added to queue successfully")
+		recipeQueueHTML := components.RecipeQueue(updatedRecipeQueue.Queue).Render(r.Context(), w)
+		fmt.Fprint(w, recipeQueueHTML)
 	}
 }
 
@@ -34,13 +34,13 @@ func handleRemoveRecipeFromQueue() http.HandlerFunc {
 			return
 		}
 
-		err := data.RemoveRecipeQueueItem(r.Context(), id)
+		updatedRecipeQueue, err := data.RemoveRecipeFromQueue(r.Context(), id)
 		if err != nil {
 			http.Error(w, "internal server error", http.StatusInternalServerError)
 			return
 		}
 
-		// TODO: Instead of this rerender recipe queue
-		fmt.Fprintf(w, "recipe removed from queue successfully")
+		recipeQueueHTML := components.RecipeQueue(updatedRecipeQueue.Queue).Render(r.Context(), w)
+		fmt.Fprint(w, recipeQueueHTML)
 	}
 }

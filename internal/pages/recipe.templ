@@ -1,16 +1,14 @@
 package pages
 
-import (
-	"github.com/davidtemelkov/wasessen/internal/data"
-)
+import "github.com/davidtemelkov/wasessen/internal/data"
 
 templ Recipe(recipe data.Recipe) {
 	@Layout() {
 		<div class="mt-5">
-				<p>{ recipe.Name }</p>
-				<p>{ recipe.Ingredients }</p>
-				<p>{ recipe.Preparation }</p>
-				<p>{ recipe.Difficulty }</p>
+			<p>{ recipe.Name }</p>
+			<p>{ recipe.Ingredients }</p>
+			<p>{ recipe.Preparation }</p>
+			<p>{ recipe.Difficulty }</p>
 		</div>
 	}
 }

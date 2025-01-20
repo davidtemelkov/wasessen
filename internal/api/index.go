@@ -15,7 +15,7 @@ func handleServeIndex() http.HandlerFunc {
 			return
 		}
 
-		recipeQueue, err := data.GetRecipeQueueItems(r.Context())
+		recipeQueue, err := data.GetRecipeQueue(r.Context())
 		if err != nil {
 			http.Error(w, "internal server error", http.StatusInternalServerError)
 			return

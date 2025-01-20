@@ -1,0 +1,28 @@
+package components
+
+import (
+	"github.com/davidtemelkov/wasessen/internal/data"
+	"strconv"
+)
+
+templ RecipeQueue(queue []data.RecipeQueueItem) {
+	<div id="recipe-queue-container">
+		for _, item := range queue {
+			<div class="recipe-queue-item flex justify-between items-center mb-3">
+				<p>{ item.RecipeName }</p>
+				<p>{ item.Cook }</p>
+				<p>{ strconv.Itoa(item.Position) }</p>
+				<div class="flex space-x-2">
+					<button class="bg-yellow-500 px-4 py-2">Up</button>
+					<button class="bg-blue-500 px-4 py-2">Down</button>
+					<button
+						hx-delete={ "/recipequeue/" + item.ID }
+						class="bg-red-500 px-4 py-2"
+						hx-target="#recipe-queue-container"
+						hx-swap="innerHTML"
+					>X</button>
+				</div>
+			</div>
+		}
+	</div>
+}

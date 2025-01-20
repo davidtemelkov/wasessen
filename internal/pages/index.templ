@@ -1,26 +1,51 @@
 package pages
 
 import (
+	"fmt"
+	"github.com/davidtemelkov/wasessen/internal/components"
 	"github.com/davidtemelkov/wasessen/internal/data"
 	"strconv"
 )
 
-templ Index(recipes []data.Recipe, recipeQueue []data.RecipeQueueItem) {
+templ Index(recipes []data.Recipe, recipeQueue data.RecipeQueue) {
 	@Layout() {
 		<button class="mt-5 bg-[#26bd6a]" hx-get="/recipe/modal" hx-target="body" hx-swap="beforeend">
 			Add a recipe
 		</button>
-		<div class="mt-5">
-			for _, recipe := range recipes {
-				<p>{ recipe.Name }</p>
-			}
-		</div>
-		<div class="mt-5">
-			for _, recipe := range recipeQueue {
-				<p>{ recipe.RecipeName }</p>
-				<p>{ recipe.Cook }</p>
-				<p>{ strconv.Itoa(recipe.Position) }</p>
-			}
+		<div class="flex">
+			<div class="mt-5">
+				<h2>Recipe Queue</h2>
+				<h2>Recipe Queue Count { strconv.Itoa(recipeQueue.Count) }</h2>
+				@components.RecipeQueue(recipeQueue.Queue)
+			</div>
+			<div class="mt-5">
+				<h2>Recipes</h2>
+				for _, recipe := range recipes {
+					<div class="recipe-item flex justify-between items-center mb-3">
+						<p>{ recipe.Name }</p>
+						<div class="flex space-x-2">
+							<button
+								hx-post="/recipequeue"
+								hx-vals={ fmt.Sprintf(`{"recipe_name":"%s", "cook":"David"}`, recipe.Name) }
+								class="bg-blue-500 px-4 py-2"
+								hx-target="#recipe-queue-container"
+								hx-swap="innerHTML"
+							>
+								David
+							</button>
+							<button
+								hx-post="/recipequeue"
+								hx-vals={ fmt.Sprintf(`{"recipe_name":"%s", "cook":"Simona"}`, recipe.Name) }
+								class="bg-green-500 px-4 py-2"
+								hx-target="#recipe-queue-container"
+								hx-swap="innerHTML"
+							>
+								Simona
+							</button>
+						</div>
+					</div>
+				}
+			</div>
 		</div>
 	}
 }

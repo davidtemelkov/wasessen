@@ -2,7 +2,7 @@ package data
 
 import (
 	"context"
-	"strconv"
+	"errors"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/feature/dynamodb/attributevalue"
@@ -11,6 +11,11 @@ import (
 	"github.com/google/uuid"
 )
 
+type RecipeQueue struct {
+	Queue []RecipeQueueItem `json:"queue"`
+	Count int               `json:"count"`
+}
+
 type RecipeQueueItem struct {
 	ID         string `json:"id"`
 	RecipeName string `json:"recipe_name"`
@@ -18,68 +23,63 @@ type RecipeQueueItem struct {
 	Position   int    `json:"position"`
 }
 
-func GetRecipeQueueItems(ctx context.Context) ([]RecipeQueueItem, error) {
-	expressionAttributeNames := map[string]string{
-		"#pk": PK,
-	}
-	expressionAttributeValues := map[string]types.AttributeValue{
-		":pk": &types.AttributeValueMemberS{
-			Value: RECIPE_QUEUE,
-		},
+func GetRecipeQueue(ctx context.Context) (RecipeQueue, error) {
+	key := map[string]types.AttributeValue{
+		PK: &types.AttributeValueMemberS{Value: RECIPE_QUEUE},
+		SK: &types.AttributeValueMemberS{Value: RECIPE_QUEUE},
 	}
 
-	queryInput := &dynamodb.QueryInput{
-		TableName:                 aws.String(TABLE_NAME),
-		KeyConditionExpression:    aws.String("#pk = :pk"),
-		ExpressionAttributeNames:  expressionAttributeNames,
-		ExpressionAttributeValues: expressionAttributeValues,
+	getItemInput := &dynamodb.GetItemInput{
+		TableName: aws.String(TABLE_NAME),
+		Key:       key,
 	}
 
-	result, err := Db.Query(ctx, queryInput)
+	result, err := Db.GetItem(ctx, getItemInput)
 	if err != nil {
-		return nil, err
+		return RecipeQueue{}, err
 	}
 
-	recipeQueueItems := make([]RecipeQueueItem, 0)
-	for _, item := range result.Items {
-		recipeQueueItem := RecipeQueueItem{}
-		if err := attributevalue.UnmarshalMap(item, &recipeQueueItem); err != nil {
-			return nil, err
-		}
-
-		recipeQueueItems = append(recipeQueueItems, recipeQueueItem)
+	if result.Item == nil {
+		return RecipeQueue{}, errors.New("not found") // Return better error if needed
 	}
 
-	return recipeQueueItems, nil
+	recipeQueue := RecipeQueue{}
+	if err := attributevalue.UnmarshalMap(result.Item, &recipeQueue); err != nil {
+		return RecipeQueue{}, err
+	}
+
+	return recipeQueue, nil
 }
 
-func InsertRecipeQueueItem(ctx context.Context, recipeName string, cook string) error {
-	id := uuid.New().String()
-
-	recipeQueueCount, err := getRecipeQueueCount(ctx)
+func AddRecipeToQueue(ctx context.Context, recipeName, cook string) (RecipeQueue, error) {
+	recipeQueue, err := GetRecipeQueue(ctx)
 	if err != nil {
-		return err
+		return RecipeQueue{}, err
 	}
 
-	item := map[string]types.AttributeValue{
-		PK: &types.AttributeValueMemberS{
-			Value: RECIPE_QUEUE,
-		},
-		SK: &types.AttributeValueMemberS{
-			Value: id,
-		},
-		ID: &types.AttributeValueMemberS{
-			Value: id,
-		},
-		RECIPE_NAME: &types.AttributeValueMemberS{
-			Value: recipeName,
-		},
-		COOK: &types.AttributeValueMemberS{
-			Value: cook,
-		},
-		POSITION: &types.AttributeValueMemberN{
-			Value: strconv.Itoa(recipeQueueCount + 1),
-		},
+	id := uuid.New().String()
+	position := recipeQueue.Count + 1
+
+	newItem := RecipeQueueItem{
+		ID:         id,
+		RecipeName: recipeName,
+		Cook:       cook,
+		Position:   position,
+	}
+
+	recipeQueue.Queue = append(recipeQueue.Queue, newItem)
+	recipeQueue.Count++
+
+	item, err := attributevalue.MarshalMap(recipeQueue)
+	if err != nil {
+		return RecipeQueue{}, err
+	}
+
+	item[PK] = &types.AttributeValueMemberS{
+		Value: RECIPE_QUEUE,
+	}
+	item[SK] = &types.AttributeValueMemberS{
+		Value: RECIPE_QUEUE,
 	}
 
 	putItemInput := &dynamodb.PutItemInput{
@@ -89,37 +89,61 @@ func InsertRecipeQueueItem(ctx context.Context, recipeName string, cook string) 
 
 	_, err = Db.PutItem(ctx, putItemInput)
 	if err != nil {
-		return err
+		return RecipeQueue{}, err
 	}
 
-	err = updateRecipeQueueCount(ctx, true)
-	if err != nil {
-		return err
-	}
-
-	return nil
+	return recipeQueue, nil
 }
 
-func RemoveRecipeQueueItem(ctx context.Context, id string) error {
-	key := map[string]types.AttributeValue{
-		PK: &types.AttributeValueMemberS{Value: RECIPE_QUEUE},
-		SK: &types.AttributeValueMemberS{Value: id},
+func RemoveRecipeFromQueue(ctx context.Context, id string) (RecipeQueue, error) {
+	recipeQueue, err := GetRecipeQueue(ctx)
+	if err != nil {
+		return RecipeQueue{}, err
 	}
 
-	deleteItemInput := &dynamodb.DeleteItemInput{
+	var indexToRemove int
+	var found bool
+	for i, item := range recipeQueue.Queue {
+		if item.ID == id {
+			indexToRemove = i
+			found = true
+			break
+		}
+	}
+
+	if !found {
+		return RecipeQueue{}, errors.New("item not found") // TODO: better error
+	}
+
+	recipeQueue.Queue = append(recipeQueue.Queue[:indexToRemove], recipeQueue.Queue[indexToRemove+1:]...)
+
+	for i := indexToRemove; i < len(recipeQueue.Queue); i++ {
+		recipeQueue.Queue[i].Position -= 1
+	}
+
+	recipeQueue.Count--
+
+	item, err := attributevalue.MarshalMap(recipeQueue)
+	if err != nil {
+		return RecipeQueue{}, err
+	}
+
+	item[PK] = &types.AttributeValueMemberS{
+		Value: RECIPE_QUEUE,
+	}
+	item[SK] = &types.AttributeValueMemberS{
+		Value: RECIPE_QUEUE,
+	}
+
+	putItemInput := &dynamodb.PutItemInput{
 		TableName: aws.String(TABLE_NAME),
-		Key:       key,
+		Item:      item,
 	}
 
-	_, err := Db.DeleteItem(ctx, deleteItemInput)
+	_, err = Db.PutItem(ctx, putItemInput)
 	if err != nil {
-		return err
+		return RecipeQueue{}, err
 	}
 
-	err = updateRecipeQueueCount(ctx, false)
-	if err != nil {
-		return err
-	}
-
-	return nil
+	return recipeQueue, nil
 }
