@@ -8,29 +8,31 @@ import (
 templ Recipes(recipes []data.Recipe) {
 	<div id="recipes-container">
 		for _, recipe := range recipes {
-			<div class="recipe-item flex justify-between items-center mb-3">
-				<p>{ recipe.Name }</p>
-				<div class="flex space-x-2">
-					<button
-						hx-post="/recipequeue"
-						hx-vals={ fmt.Sprintf(`{"recipe_name":"%s", "cook":"David"}`, recipe.Name) }
-						class="bg-blue-500 px-4 py-2"
-						hx-target="#recipe-queue-container"
-						hx-swap="innerHTML"
-					>
-						David
-					</button>
-					<button
-						hx-post="/recipequeue"
-						hx-vals={ fmt.Sprintf(`{"recipe_name":"%s", "cook":"Simona"}`, recipe.Name) }
-						class="bg-green-500 px-4 py-2"
-						hx-target="#recipe-queue-container"
-						hx-swap="innerHTML"
-					>
-						Simona
-					</button>
+			<a href={ templ.SafeURL(fmt.Sprintf("/recipe/%s", recipe.ID)) }>
+				<div class="recipe-item flex justify-between items-center mb-3">
+					<p>{ recipe.Name }</p>
+					<div class="flex space-x-2">
+						<button
+							hx-post="/recipequeue"
+							hx-vals={ fmt.Sprintf(`{"recipe_name":"%s", "cook":"David"}`, recipe.Name) }
+							class="bg-blue-500 px-4 py-2"
+							hx-target="#recipe-queue-container"
+							hx-swap="innerHTML"
+						>
+							David
+						</button>
+						<button
+							hx-post="/recipequeue"
+							hx-vals={ fmt.Sprintf(`{"recipe_name":"%s", "cook":"Simona"}`, recipe.Name) }
+							class="bg-green-500 px-4 py-2"
+							hx-target="#recipe-queue-container"
+							hx-swap="innerHTML"
+						>
+							Simona
+						</button>
+					</div>
 				</div>
-			</div>
+			</a>
 		}
 	</div>
 }
