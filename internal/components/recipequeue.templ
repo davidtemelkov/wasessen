@@ -13,8 +13,18 @@ templ RecipeQueue(queue []data.RecipeQueueItem) {
 				<p>{ item.Cook }</p>
 				<p>{ strconv.Itoa(item.Position) }</p>
 				<div class="flex space-x-2">
-					<button class="bg-yellow-500 px-4 py-2">Up</button>
-					<button class="bg-blue-500 px-4 py-2">Down</button>
+					<button
+						hx-patch={ "/recipequeue/" + item.ID + "/up" }
+						class="bg-yellow-500 px-4 py-2"
+						hx-target="#recipe-queue-container"
+						hx-swap="innerHTML"
+					>Up</button>
+					<button
+						hx-patch={ "/recipequeue/" + item.ID + "/down" }
+						class="bg-blue-500 px-4 py-2"
+						hx-target="#recipe-queue-container"
+						hx-swap="innerHTML"
+					>Down</button>
 					<button
 						hx-delete={ "/recipequeue/" + item.ID }
 						class="bg-red-500 px-4 py-2"

@@ -44,3 +44,22 @@ func handleRemoveRecipeFromQueue() http.HandlerFunc {
 		fmt.Fprint(w, recipeQueueHTML)
 	}
 }
+
+func handleMoveRecipeInQueue(up bool) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		id := chi.URLParam(r, "id")
+		if id == "" {
+			http.Error(w, "missing id", http.StatusBadRequest)
+			return
+		}
+
+		updatedRecipeQueue, err := data.MoveRecipeInQueue(r.Context(), id, up)
+		if err != nil {
+			http.Error(w, "internal server error", http.StatusInternalServerError)
+			return
+		}
+
+		recipeQueueHTML := components.RecipeQueue(updatedRecipeQueue.Queue).Render(r.Context(), w)
+		fmt.Fprint(w, recipeQueueHTML)
+	}
+}

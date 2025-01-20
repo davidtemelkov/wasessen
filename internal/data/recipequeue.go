@@ -147,3 +147,63 @@ func RemoveRecipeFromQueue(ctx context.Context, id string) (RecipeQueue, error) 
 
 	return recipeQueue, nil
 }
+
+func MoveRecipeInQueue(ctx context.Context, id string, up bool) (RecipeQueue, error) {
+	recipeQueue, err := GetRecipeQueue(ctx)
+	if err != nil {
+		return RecipeQueue{}, err
+	}
+
+	var indexToMove int
+	var found bool
+	for i, item := range recipeQueue.Queue {
+		if item.ID == id {
+			indexToMove = i
+			found = true
+			break
+		}
+	}
+
+	// If the item is not found or is at the boundary
+	if !found || (up && indexToMove == 0) || (!up && indexToMove == len(recipeQueue.Queue)-1) {
+		return recipeQueue, nil
+	}
+
+	// Determine the swap index based on direction
+	swapIndex := indexToMove - 1
+	if !up {
+		swapIndex = indexToMove + 1
+	}
+
+	// Swap positions
+	recipeQueue.Queue[indexToMove].Position, recipeQueue.Queue[swapIndex].Position =
+		recipeQueue.Queue[swapIndex].Position, recipeQueue.Queue[indexToMove].Position
+
+	// Reorder the slice
+	recipeQueue.Queue[indexToMove], recipeQueue.Queue[swapIndex] =
+		recipeQueue.Queue[swapIndex], recipeQueue.Queue[indexToMove]
+
+	item, err := attributevalue.MarshalMap(recipeQueue)
+	if err != nil {
+		return RecipeQueue{}, err
+	}
+
+	item[PK] = &types.AttributeValueMemberS{
+		Value: RECIPE_QUEUE,
+	}
+	item[SK] = &types.AttributeValueMemberS{
+		Value: RECIPE_QUEUE,
+	}
+
+	putItemInput := &dynamodb.PutItemInput{
+		TableName: aws.String(TABLE_NAME),
+		Item:      item,
+	}
+
+	_, err = Db.PutItem(ctx, putItemInput)
+	if err != nil {
+		return RecipeQueue{}, err
+	}
+
+	return recipeQueue, nil
+}
