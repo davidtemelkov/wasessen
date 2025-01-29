@@ -88,7 +88,7 @@ func RecipeQueue(queue []data.RecipeQueueItem) templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\" class=\"bg-yellow-500 px-4 py-2\" hx-target=\"#recipe-queue-container\" hx-swap=\"innerHTML\">Up</button> <button hx-patch=\"")
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\" class=\"bg-yellow-500 px-4 py-2\" hx-target=\"#recipe-queue-container\" hx-swap=\"innerHTML\">↑</button> <button hx-patch=\"")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -101,7 +101,7 @@ func RecipeQueue(queue []data.RecipeQueueItem) templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\" class=\"bg-blue-500 px-4 py-2\" hx-target=\"#recipe-queue-container\" hx-swap=\"innerHTML\">Down</button> <button hx-delete=\"")
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\" class=\"bg-blue-500 px-4 py-2\" hx-target=\"#recipe-queue-container\" hx-swap=\"innerHTML\">↓</button> <button hx-delete=\"")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}

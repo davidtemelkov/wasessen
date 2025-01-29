@@ -18,13 +18,13 @@ templ RecipeQueue(queue []data.RecipeQueueItem) {
 						class="bg-yellow-500 px-4 py-2"
 						hx-target="#recipe-queue-container"
 						hx-swap="innerHTML"
-					>Up</button>
+					>↑</button>
 					<button
 						hx-patch={ "/recipequeue/" + item.ID + "/down" }
 						class="bg-blue-500 px-4 py-2"
 						hx-target="#recipe-queue-container"
 						hx-swap="innerHTML"
-					>Down</button>
+					>↓</button>
 					<button
 						hx-delete={ "/recipequeue/" + item.ID }
 						class="bg-red-500 px-4 py-2"

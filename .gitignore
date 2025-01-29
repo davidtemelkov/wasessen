@@ -4,7 +4,6 @@
 *.so
 *.dylib
 *.env
-*.json
 
 *.test
 
@@ -15,3 +14,7 @@ go.work
 .DS_Store
 
 fly.toml
+
+serviceAccountKey.json
+
+node_modules

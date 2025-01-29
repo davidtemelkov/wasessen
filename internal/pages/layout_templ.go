@@ -26,7 +26,7 @@ func Layout() templ.Component {
 			templ_7745c5c3_Var1 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<!doctype html><html lang=\"en\"><head><meta charset=\"UTF-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"><link rel=\"icon\" type=\"image/svg+xml\" href=\"/dist/hamburger.svg\"><link href=\"/dist/output.css\" rel=\"stylesheet\"><title>Was Essen</title><script src=\"https://unpkg.com/htmx.org@1.5.0\"></script><script src=\"https://unpkg.com/hyperscript.org@0.9.12\"></script></head><body><div class=\"flex flex-col items-center\"><a href=\"/\"><div class=\"flex items-center\"><img src=\"/dist/hamburger.svg\" alt=\"\" class=\"mr-2 h-[5rem]\"><h1>Was Essen</h1></div></a>")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<!doctype html><html lang=\"en\"><head><meta charset=\"UTF-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"><link rel=\"icon\" type=\"image/svg+xml\" href=\"/dist/hamburger.svg\"><link href=\"/dist/output.css\" rel=\"stylesheet\"><title>Was Essen</title><script src=\"https://unpkg.com/htmx.org@1.5.0\"></script><script src=\"https://unpkg.com/hyperscript.org@0.9.12\"></script></head><body><div class=\"flex flex-col min-h-screen items-center min-w-screen\"><a href=\"/\"><div class=\"flex items-center\"><img src=\"/dist/hamburger.svg\" alt=\"\" class=\"mr-2 h-[5rem]\"><h1>Was Essen</h1></div></a>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

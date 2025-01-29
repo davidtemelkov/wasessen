@@ -11,9 +11,9 @@ templ Index(recipes []data.Recipe, recipeQueue data.RecipeQueue) {
 		<button class="mt-5 bg-[#26bd6a]" hx-get="/recipe/modal" hx-target="body" hx-swap="beforeend">
 			Add a recipe
 		</button>
-		<div class="flex">
+		<div class="flex w-full flex-col justify-center sm:flex-row sm:justify-around">
 			<div class="mt-5">
-				<h2>Recipe Queue</h2>
+				<h2 class="text-xl bold mb-5 justify-self-center">Recipe Queue</h2>
 				<div class="flex">
 					<h2>Recipe Queue Count</h2>
 					<span id="recipe-queue-count">{ strconv.Itoa(recipeQueue.Count) }</span>
@@ -21,7 +21,7 @@ templ Index(recipes []data.Recipe, recipeQueue data.RecipeQueue) {
 				@components.RecipeQueue(recipeQueue.Queue)
 			</div>
 			<div class="mt-5">
-				<h2>Recipes</h2>
+				<h2 class="text-xl bold mb-5 justify-self-center">Recipes</h2>
 				@components.Recipes(recipes)
 			</div>
 		</div>
