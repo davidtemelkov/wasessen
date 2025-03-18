@@ -18,3 +18,8 @@ fly.toml
 serviceAccountKey.json
 
 node_modules
+
+.terraform*
+terraform*
+
+*.zip

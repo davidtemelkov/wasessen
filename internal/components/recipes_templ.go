@@ -40,7 +40,7 @@ func Recipes(recipes []data.Recipe) templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			var templ_7745c5c3_Var2 templ.SafeURL = templ.SafeURL(fmt.Sprintf("/recipe/%s", recipe.ID))
+			var templ_7745c5c3_Var2 templ.SafeURL = templ.SafeURL(fmt.Sprintf("/prod/recipe/%s", recipe.ID))
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(string(templ_7745c5c3_Var2)))
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
@@ -58,7 +58,7 @@ func Recipes(recipes []data.Recipe) templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</p></a><div class=\"flex space-x-2\"><button hx-post=\"/recipequeue\" hx-vals=\"")
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</p></a><div class=\"flex space-x-2\"><button hx-post=\"/prod/recipequeue\" hx-vals=\"")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -71,7 +71,7 @@ func Recipes(recipes []data.Recipe) templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\" class=\"bg-blue-500 px-4 py-2\" hx-target=\"#recipe-queue-container\" hx-swap=\"innerHTML\" _=\"on htmx:afterRequest set #recipe-queue-count.innerText to (parseInt(#recipe-queue-count.innerText) + 1)\">David</button> <button hx-post=\"/recipequeue\" hx-vals=\"")
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\" class=\"bg-blue-500 px-4 py-2\" hx-target=\"#recipe-queue-container\" hx-swap=\"innerHTML\" _=\"on htmx:afterRequest set #recipe-queue-count.innerText to (parseInt(#recipe-queue-count.innerText) + 1)\">David</button> <button hx-post=\"/prod/recipequeue\" hx-vals=\"")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}

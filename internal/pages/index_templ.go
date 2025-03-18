@@ -44,7 +44,7 @@ func Index(recipes []data.Recipe, recipeQueue data.RecipeQueue) templ.Component 
 				}()
 			}
 			ctx = templ.InitializeContext(ctx)
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<button class=\"mt-5 bg-[#26bd6a]\" hx-get=\"/recipe/modal\" hx-target=\"body\" hx-swap=\"beforeend\">Add a recipe</button><div class=\"flex w-full flex-col justify-center sm:flex-row sm:justify-around\"><div class=\"mt-5\"><h2 class=\"text-xl bold mb-5 justify-self-center\">Recipe Queue</h2><div class=\"flex\"><h2>Recipe Queue Count</h2><span id=\"recipe-queue-count\">")
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<button class=\"mt-5 bg-[#26bd6a]\" hx-get=\"/prod/recipe/modal\" hx-target=\"body\" hx-swap=\"beforeend\">Add a recipe</button><div class=\"flex w-full flex-col justify-center sm:flex-row sm:justify-around\"><div class=\"mt-5\"><h2 class=\"text-xl bold mb-5 justify-self-center\">Recipe Queue</h2><div class=\"flex\"><h2>Recipe Queue Count</h2><span id=\"recipe-queue-count\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}

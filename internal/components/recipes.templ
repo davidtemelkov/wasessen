@@ -9,12 +9,12 @@ templ Recipes(recipes []data.Recipe) {
 	<div id="recipes-container">
 		for _, recipe := range recipes {
 			<div class="recipe-item flex justify-between items-center mb-3">
-				<a href={ templ.SafeURL(fmt.Sprintf("/recipe/%s", recipe.ID)) }>
+				<a href={ templ.SafeURL(fmt.Sprintf("/prod/recipe/%s", recipe.ID)) }>
 					<p>{ recipe.Name }</p>
 				</a>
 				<div class="flex space-x-2">
 					<button
-						hx-post="/recipequeue"
+						hx-post="/prod/recipequeue"
 						hx-vals={ fmt.Sprintf(`{"recipe_name":"%s", "cook":"David"}`, recipe.Name) }
 						class="bg-blue-500 px-4 py-2"
 						hx-target="#recipe-queue-container"
@@ -24,7 +24,7 @@ templ Recipes(recipes []data.Recipe) {
 						David
 					</button>
 					<button
-						hx-post="/recipequeue"
+						hx-post="/prod/recipequeue"
 						hx-vals={ fmt.Sprintf(`{"recipe_name":"%s", "cook":"Simona"}`, recipe.Name) }
 						class="bg-green-500 px-4 py-2"
 						hx-target="#recipe-queue-container"
