@@ -3,12 +3,13 @@ package pages
 import (
 	"github.com/davidtemelkov/wasessen/internal/components"
 	"github.com/davidtemelkov/wasessen/internal/data"
+	"github.com/davidtemelkov/wasessen/internal/utils"
 	"strconv"
 )
 
 templ Index(recipes []data.Recipe, recipeQueue data.RecipeQueue) {
 	@Layout() {
-		<button class="mt-5 bg-[#26bd6a]" hx-get="/prod/recipe/modal" hx-target="body" hx-swap="beforeend">
+		<button class="mt-5 bg-[#26bd6a]" hx-get={ utils.BASE_PATH + "/recipe/modal" } hx-target="body" hx-swap="beforeend">
 			Add a recipe
 		</button>
 		<div class="flex w-full flex-col justify-center sm:flex-row sm:justify-around">
@@ -16,7 +17,7 @@ templ Index(recipes []data.Recipe, recipeQueue data.RecipeQueue) {
 				<h2 class="text-xl bold mb-5 justify-self-center">Recipe Queue</h2>
 				<div class="flex">
 					<h2>Recipe Queue Count</h2>
-					<span id="recipe-queue-count">{ strconv.Itoa(recipeQueue.Count) }</span>
+					<span class="ml-1" id="recipe-queue-count">{ strconv.Itoa(recipeQueue.Count) }</span>
 				</div>
 				@components.RecipeQueue(recipeQueue.Queue)
 			</div>

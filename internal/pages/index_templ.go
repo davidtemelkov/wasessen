@@ -11,6 +11,7 @@ import templruntime "github.com/a-h/templ/runtime"
 import (
 	"github.com/davidtemelkov/wasessen/internal/components"
 	"github.com/davidtemelkov/wasessen/internal/data"
+	"github.com/davidtemelkov/wasessen/internal/utils"
 	"strconv"
 )
 
@@ -44,16 +45,29 @@ func Index(recipes []data.Recipe, recipeQueue data.RecipeQueue) templ.Component 
 				}()
 			}
 			ctx = templ.InitializeContext(ctx)
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<button class=\"mt-5 bg-[#26bd6a]\" hx-get=\"/prod/recipe/modal\" hx-target=\"body\" hx-swap=\"beforeend\">Add a recipe</button><div class=\"flex w-full flex-col justify-center sm:flex-row sm:justify-around\"><div class=\"mt-5\"><h2 class=\"text-xl bold mb-5 justify-self-center\">Recipe Queue</h2><div class=\"flex\"><h2>Recipe Queue Count</h2><span id=\"recipe-queue-count\">")
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<button class=\"mt-5 bg-[#26bd6a]\" hx-get=\"")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var3 string
-			templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(recipeQueue.Count))
+			templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinStringErrs(utils.BASE_PATH + "/recipe/modal")
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/pages/index.templ`, Line: 19, Col: 68}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/pages/index.templ`, Line: 12, Col: 78}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var3))
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\" hx-target=\"body\" hx-swap=\"beforeend\">Add a recipe</button><div class=\"flex w-full flex-col justify-center sm:flex-row sm:justify-around\"><div class=\"mt-5\"><h2 class=\"text-xl bold mb-5 justify-self-center\">Recipe Queue</h2><div class=\"flex\"><h2>Recipe Queue Count</h2><span class=\"ml-1\" id=\"recipe-queue-count\">")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			var templ_7745c5c3_Var4 string
+			templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(recipeQueue.Count))
+			if templ_7745c5c3_Err != nil {
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/pages/index.templ`, Line: 20, Col: 81}
+			}
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var4))
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}

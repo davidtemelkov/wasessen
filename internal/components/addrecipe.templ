@@ -1,5 +1,7 @@
 package components
 
+import "github.com/davidtemelkov/wasessen/internal/utils"
+
 templ AddRecipe() {
 	<div
 		id="modal-wrapper"
@@ -33,7 +35,7 @@ templ AddRecipe() {
 			<h2 class="text-lg font-[900] mb-4">Add a new recipe</h2>
 			<form
 				class="bg-[#ffb675] p-4"
-				hx-post="/prod/recipe"
+				hx-post={ utils.BASE_PATH + "/recipe" }
 				hx-encoding="multipart/form-data"
 				hx-target="#recipes-container"
 				hx-swap="innerHTML"

@@ -19,6 +19,16 @@ func Mount(r chi.Router) {
 		http.FileServer(http.FS(Assets)).ServeHTTP(w, r)
 	})
 
+	// For local development, if needed
+	// r.Route("/dist", func(r chi.Router) {
+	// 	r.Use(func(next http.Handler) http.Handler {
+	// 		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+	// 			next.ServeHTTP(w, r)
+	// 		})
+	// 	})
+
+	// 	r.Handle("/*", http.FileServer(http.FS(Assets)))
+	// })
 }
 
 func getMimeType(filename string) string {

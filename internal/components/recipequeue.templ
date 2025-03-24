@@ -2,6 +2,7 @@ package components
 
 import (
 	"github.com/davidtemelkov/wasessen/internal/data"
+	"github.com/davidtemelkov/wasessen/internal/utils"
 	"strconv"
 )
 
@@ -9,24 +10,26 @@ templ RecipeQueue(queue []data.RecipeQueueItem) {
 	<div id="recipe-queue-container">
 		for _, item := range queue {
 			<div class="recipe-queue-item flex justify-between items-center mb-3">
-				<p>{ item.RecipeName }</p>
-				<p>{ item.Cook }</p>
-				<p>{ strconv.Itoa(item.Position) }</p>
+				<div class="flex w-full justify-between">
+					<p class="w-[42%] truncate overflow-hidden whitespace-nowrap">{ item.RecipeName }</p>
+					<p class="w-[42%] truncate overflow-hidden whitespace-nowrap">{ item.Cook }</p>
+					<p class="w-[16%] truncate overflow-hidden whitespace-nowrap">{ strconv.Itoa(item.Position) }</p>
+				</div>
 				<div class="flex space-x-2">
 					<button
-						hx-patch={ "/prod/recipequeue/" + item.ID + "/up" }
+						hx-patch={ utils.BASE_PATH + "/recipequeue/" + item.ID + "/up" }
 						class="bg-yellow-500 px-4 py-2"
 						hx-target="#recipe-queue-container"
 						hx-swap="innerHTML"
 					>↑</button>
 					<button
-						hx-patch={ "/prod/recipequeue/" + item.ID + "/down" }
+						hx-patch={ utils.BASE_PATH + "/recipequeue/" + item.ID + "/down" }
 						class="bg-blue-500 px-4 py-2"
 						hx-target="#recipe-queue-container"
 						hx-swap="innerHTML"
 					>↓</button>
 					<button
-						hx-delete={ "/prod/recipequeue/" + item.ID }
+						hx-delete={ utils.BASE_PATH + "/recipequeue/" + item.ID }
 						class="bg-red-500 px-4 py-2"
 						hx-target="#recipe-queue-container"
 						hx-swap="innerHTML"

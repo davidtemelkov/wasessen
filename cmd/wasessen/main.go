@@ -12,8 +12,9 @@ import (
 
 func main() {
 	// TODO: Refactor env loading for local dev and for deployed app
-	// err := godotenv.Load("../../.env")
+	// err := godotenv.Load()
 	// if err != nil {
+	// 	fmt.Println(err)
 	// 	os.Exit(1)
 	// }
 
