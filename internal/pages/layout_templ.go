@@ -54,7 +54,7 @@ func Layout() templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\" rel=\"stylesheet\"><title>Was Essen</title><script src=\"https://unpkg.com/htmx.org@1.5.0\"></script><script src=\"https://unpkg.com/hyperscript.org@0.9.12\"></script></head><body><div class=\"flex flex-col min-h-screen items-center min-w-screen\"><a href=\"")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\" rel=\"stylesheet\"><title>Was Essen</title><script src=\"https://unpkg.com/htmx.org@1.5.0\"></script><script src=\"https://unpkg.com/hyperscript.org@0.9.12\"></script></head><body><div class=\"w-full min-h-screen min-w-screen mx-10 flex flex-col items-center\"><a href=\"")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
