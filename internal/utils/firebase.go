@@ -2,6 +2,7 @@ package utils
 
 import (
 	"context"
+	"encoding/base64"
 	"errors"
 	"fmt"
 	"io"
@@ -30,7 +31,12 @@ func UploadFile(ctx context.Context, file multipart.File) (string, error) {
 	fileName := uuid.New().String()
 
 	fb := newFireBaseStorage(bucketName)
-	opt := option.WithCredentialsFile("serviceAccountKey.json")
+
+	creds, err := base64.StdEncoding.DecodeString(os.Getenv("FIREBASE_CREDENTIALS"))
+	if err != nil {
+		return "", fmt.Errorf("error decoding credentials: %v", err)
+	}
+	opt := option.WithCredentialsJSON(creds)
 
 	client, err := storage.NewClient(ctx, opt)
 	if err != nil {

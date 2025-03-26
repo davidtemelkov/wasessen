@@ -7,7 +7,7 @@ import (
 )
 
 templ Recipes(recipes []data.Recipe) {
-	<div id="recipes-container">
+	<div class="h-full" id="recipes-container">
 		for _, recipe := range recipes {
 			<div class="recipe-item flex justify-between items-center mb-3">
 				<a href={ templ.SafeURL(fmt.Sprintf("%s/recipe/%s", utils.BASE_PATH, recipe.ID)) }>

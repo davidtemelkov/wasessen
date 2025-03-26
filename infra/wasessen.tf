@@ -10,6 +10,18 @@ variable "table_name" {
   type = string
 }
 
+variable "firebase_bucket_name" {
+  type = string
+}
+
+variable "firebase_url" {
+  type = string
+}
+
+variable "firebase_credentials" {
+  type = string
+}
+
 resource "aws_lambda_function" "wasessen" {
   function_name = "wasessen"
   role          = aws_iam_role.lambda_exec.arn
@@ -23,6 +35,9 @@ resource "aws_lambda_function" "wasessen" {
     variables = {
       AWS_LAMBDA_EXEC_WRAPPER = "/opt/bootstrap"
       PORT                    = "8080"
+      FIREBASE_BUCKET_NAME    = var.firebase_bucket_name
+      FIREBASE_URL            = var.firebase_url
+      FIREBASE_CREDENTIALS    = var.firebase_credentials
     }
   }
 
